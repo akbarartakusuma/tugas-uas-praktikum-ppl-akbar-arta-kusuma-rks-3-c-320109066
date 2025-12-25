@@ -15,21 +15,26 @@ public class DemoBlazeFinalTest extends BaseTest {
         CartPage cart = new CartPage(driver);
         CheckoutPage checkout = new CheckoutPage(driver);
 
-        test.info("Memilih produk");
+        test.info("Navigasi ke Home dan memilih produk");
         home.selectFirstProduct();
 
-        test.info("Menambah ke keranjang");
+        test.info("Menambahkan produk ke keranjang");
         product.addToCart();
 
-        test.info("Membuka keranjang dan checkout");
+        test.info("Membuka halaman keranjang");
         home.goToCart();
-        // (Tambahkan method clickPlaceOrder di CartPage jika perlu)
 
-        test.info("Menyelesaikan pembayaran");
-        // Contoh data dummy
-        checkout.completePurchase("Junior QA", "123456789");
+        test.info("Mengklik Place Order untuk memunculkan form pembayaran");
+        // PERBAIKAN: Langkah ini wajib ada agar elemen 'id: name' muncul
+        cart.clickPlaceOrder();
 
-        Assert.assertTrue(checkout.getConfirmation().contains("Thank you"), "Pembelian gagal!");
-        test.pass("Transaksi Berhasil!");
+        test.info("Mengisi form pembelian dan konfirmasi");
+        checkout.completePurchase("Junior QA TechMart", "1234567890");
+
+        String confirmationText = checkout.getConfirmation();
+        test.info("Pesan konfirmasi: " + confirmationText);
+
+        Assert.assertTrue(confirmationText.contains("Thank you"), "Pembelian gagal dilakukan!");
+        test.pass("Pengujian End-to-End Berhasil!");
     }
 }

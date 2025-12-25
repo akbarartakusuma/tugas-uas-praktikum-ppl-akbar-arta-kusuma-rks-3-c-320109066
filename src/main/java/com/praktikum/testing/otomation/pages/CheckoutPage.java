@@ -6,22 +6,32 @@ import org.openqa.selenium.support.FindBy;
 
 public class CheckoutPage extends BasePage {
 
-    @FindBy(id = "name") private WebElement nameField;
-    @FindBy(id = "card") private WebElement cardField;
-    @FindBy(xpath = "//button[contains(text(),'Purchase')]") private WebElement purchaseBtn;
-    @FindBy(css = ".sweet-alert h2") private WebElement successMsg;
+    @FindBy(id = "name")
+    private WebElement nameField;
+
+    @FindBy(id = "card")
+    private WebElement cardField;
+
+    @FindBy(xpath = "//button[contains(text(),'Purchase')]")
+    private WebElement purchaseBtn;
+
+    @FindBy(css = ".sweet-alert h2")
+    private WebElement successMsg;
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
     }
 
     public void completePurchase(String name, String card) {
+        // waitForVisible akan menunggu modal muncul sepenuhnya
+        waitForVisible(nameField);
         enterText(nameField, name);
         enterText(cardField, card);
         click(purchaseBtn);
     }
 
     public String getConfirmation() {
+        waitForVisible(successMsg);
         return successMsg.getText();
     }
 }

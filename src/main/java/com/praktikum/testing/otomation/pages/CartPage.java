@@ -21,11 +21,8 @@ public class CartPage extends BasePage {
         return cartItems.size();
     }
 
+    // Method krusial untuk memunculkan form pembelian
     public void clickPlaceOrder() {
         click(placeOrderButton);
-    }
-
-    public boolean isCartNotEmpty() {
-        return getCartItemCount() > 0;
     }
 }
