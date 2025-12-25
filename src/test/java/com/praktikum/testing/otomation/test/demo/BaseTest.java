@@ -2,7 +2,7 @@ package com.praktikum.testing.otomation.test.demo;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.praktikum.testing.otomation.utils.ExtentReportManager;
+import com.praktikum.testing.otomation.utils.ExtentReportManager; // Sesuaikan package
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

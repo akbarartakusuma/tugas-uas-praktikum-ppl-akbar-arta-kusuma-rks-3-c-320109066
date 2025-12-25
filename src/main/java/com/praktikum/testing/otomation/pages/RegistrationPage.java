@@ -23,10 +23,11 @@ public class RegistrationPage extends BasePage {
     }
 
     public void registerUser(String username, String password) {
+        // Sekarang waitForVisible sudah tidak merah karena sudah ada di BasePage
         waitForVisible(signUpModal);
         enterText(usernameInput, username);
         enterText(passwordInput, password);
         click(signUpButton);
-        acceptAlert(); // Menangani alert "Sign up successful"
+        acceptAlert();
     }
 }

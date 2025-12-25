@@ -1,4 +1,4 @@
-package com.praktikum.testing.otomation.pages;
+package com.praktikum.testing.otomation.pages; // Pastikan sinkron dengan struktur folder
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
@@ -18,8 +18,13 @@ public class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    protected void enterText(WebElement element, String text) {
+    // Method yang tadi hilang (Penyebab Merah)
+    protected void waitForVisible(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    protected void enterText(WebElement element, String text) {
+        waitForVisible(element); // Memanggil method visibility
         element.clear();
         element.sendKeys(text);
     }
