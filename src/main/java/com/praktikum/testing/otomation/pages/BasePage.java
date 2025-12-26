@@ -31,6 +31,8 @@ public class BasePage {
     protected void click(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
+        // Delay singkat agar transisi modal/halaman stabil
+        try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     protected boolean isDisplayed(WebElement element) {
@@ -46,6 +48,7 @@ public class BasePage {
         wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
         alert.accept();
+        try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     protected void navigateTo(String url) {

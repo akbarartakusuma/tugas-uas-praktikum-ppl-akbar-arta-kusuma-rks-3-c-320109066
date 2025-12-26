@@ -10,16 +10,23 @@ public class CheckoutProcessTest extends BaseTest {
     public void testSuccessfulPurchase() {
         test = extent.createTest("Checkout - Positive Test");
         HomePage home = new HomePage(driver);
+        ProductPage prod = new ProductPage(driver);
         CartPage cart = new CartPage(driver);
         CheckoutPage check = new CheckoutPage(driver);
 
         home.selectFirstProduct();
-        new ProductPage(driver).addToCart();
+        prod.addToCart();
+
+        // Memberi waktu session cart terisi
+        try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
+
         home.goToCart();
         cart.clickPlaceOrder();
-        check.completePurchase("QA Tester", "4555-1234-5678-9999");
 
-        Assert.assertTrue(check.getConfirmation().contains("Thank you"), "Gagal Checkout!");
-        test.pass("Pembelian berhasil dilakukan.");
+        check.completePurchase("Junior QA TechMart", "4555-1234-5678-0000");
+
+        String confirmation = check.getConfirmation();
+        Assert.assertTrue(confirmation.contains("Thank you"), "Pesan sukses tidak muncul!");
+        test.pass("Pembelian selesai dengan konfirmasi: " + confirmation);
     }
 }
