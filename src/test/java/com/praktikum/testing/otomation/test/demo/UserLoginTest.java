@@ -1,8 +1,11 @@
 package com.praktikum.testing.otomation.test.demo;
 
 import com.praktikum.testing.otomation.pages.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.time.Duration;
 
 public class UserLoginTest extends BaseTest {
 
@@ -12,19 +15,21 @@ public class UserLoginTest extends BaseTest {
         HomePage home = new HomePage(driver);
         LoginPage login = new LoginPage(driver);
 
-        test.info("Membuka menu Login");
         home.clickLogin();
-
-        test.info("Melakukan login dengan user admin_techmart");
-        // Pastikan user admin_techmart sudah terdaftar di sistem DemoBlaze
+        // Pastikan akun ini sudah terdaftar. Jika belum, ganti dengan yang sudah ada.
         login.performLogin("admin_techmart", "admin123");
 
-        // Memberikan waktu bagi sistem untuk memproses login dan menampilkan teks Welcome
-        try { Thread.sleep(3000); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        // Verifikasi apakah nama user muncul di navbar (menggunakan method isUserLoggedIn dari HomePage)
-        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak muncul di navbar.");
-        test.pass("Login berhasil, status user terverifikasi di navbar.");
+        // Menunggu hingga proses login selesai dan teks Welcome muncul
+        test.info("Menunggu sinkronisasi status login di navbar");
+        try {
+            WebDriverWait customWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            // Verifikasi login berhasil
+            Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak ditemukan.");
+            test.pass("Login berhasil, status user terverifikasi.");
+        } catch (Exception e) {
+            test.fail("Gagal verifikasi login: " + e.getMessage());
+            Assert.fail("Login verification failed.");
+        }
     }
 
     @Test(priority = 2, description = "Negatif: Login dengan password salah")
@@ -33,16 +38,12 @@ public class UserLoginTest extends BaseTest {
         HomePage home = new HomePage(driver);
         LoginPage login = new LoginPage(driver);
 
-        test.info("Membuka menu Login");
         home.clickLogin();
-
-        test.info("Mencoba login dengan password yang salah");
         login.performLogin("admin_techmart", "password_salah_123");
 
-        // DemoBlaze akan memunculkan alert browser "Wrong password."
-        test.info("Menangani alert error dari browser");
+        test.info("Menangani alert 'Wrong password.'");
         login.acceptAlert();
-        test.pass("Sistem berhasil menolak akses dengan password salah.");
+        test.pass("Sistem berhasil menolak login dengan password salah.");
     }
 
     @Test(priority = 3, description = "Negatif: Login dengan kolom kredensial kosong")
@@ -51,14 +52,10 @@ public class UserLoginTest extends BaseTest {
         HomePage home = new HomePage(driver);
         LoginPage login = new LoginPage(driver);
 
-        test.info("Membuka menu Login");
         home.clickLogin();
-
-        test.info("Klik login tanpa mengisi username dan password");
         login.performLogin("", "");
 
-        // DemoBlaze memunculkan alert "Please fill out Username and Password."
-        test.info("Menangani alert peringatan kolom kosong");
+        test.info("Menangani alert 'Please fill out Username and Password.'");
         login.acceptAlert();
         test.pass("Sistem berhasil memberikan alert peringatan untuk kolom kosong.");
     }
