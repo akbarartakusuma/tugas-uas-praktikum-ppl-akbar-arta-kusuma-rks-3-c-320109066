@@ -14,7 +14,8 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        // Kita tingkatkan waktu tunggu menjadi 30 detik untuk mengantisipasi lag internet
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver, this);
     }
 
@@ -29,29 +30,25 @@ public class BasePage {
     }
 
     protected void click(WebElement element) {
+        // Menunggu elemen benar-benar bisa diklik
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
-        // Delay singkat agar transisi modal/halaman stabil
-        try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
-    protected boolean isDisplayed(WebElement element) {
+    public boolean isUserLoggedIn(WebElement welcomeElement) {
         try {
-            waitForVisible(element);
-            return element.isDisplayed();
+            // Menunggu hingga teks "Welcome" muncul di navbar
+            wait.until(ExpectedConditions.visibilityOf(welcomeElement));
+            return welcomeElement.isDisplayed();
         } catch (Exception e) {
             return false;
         }
     }
 
     public void acceptAlert() {
+        // Menunggu alert browser muncul sebelum diklik
         wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        try { Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
-    }
-
-    protected void navigateTo(String url) {
-        driver.get(url);
     }
 }

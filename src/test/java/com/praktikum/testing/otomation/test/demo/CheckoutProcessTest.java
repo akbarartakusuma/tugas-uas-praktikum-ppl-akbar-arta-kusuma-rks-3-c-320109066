@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class CheckoutProcessTest extends BaseTest {
 
-    @Test(priority = 1, description = "Positif: Selesaikan pembelian produk")
+    @Test(priority = 1, description = "Positif: Pembelian produk hingga selesai")
     public void testSuccessfulPurchase() {
         test = extent.createTest("Checkout - Positive Test");
         HomePage home = new HomePage(driver);
@@ -14,19 +14,20 @@ public class CheckoutProcessTest extends BaseTest {
         CartPage cart = new CartPage(driver);
         CheckoutPage check = new CheckoutPage(driver);
 
+        test.info("Menambah produk ke keranjang");
         home.selectFirstProduct();
         prod.addToCart();
 
-        // Memberi waktu session cart terisi
-        try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
-
+        test.info("Navigasi ke halaman Cart");
         home.goToCart();
+
+        test.info("Mengisi detail pembayaran");
         cart.clickPlaceOrder();
+        check.completePurchase("TechMart Tester", "4555-1234-5678-0000");
 
-        check.completePurchase("Junior QA TechMart", "4555-1234-5678-0000");
-
+        test.info("Verifikasi pesan sukses");
         String confirmation = check.getConfirmation();
-        Assert.assertTrue(confirmation.contains("Thank you"), "Pesan sukses tidak muncul!");
-        test.pass("Pembelian selesai dengan konfirmasi: " + confirmation);
+        Assert.assertTrue(confirmation.contains("Thank you"), "Gagal checkout!");
+        test.pass("Pembelian Berhasil: " + confirmation);
     }
 }
