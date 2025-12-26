@@ -25,6 +25,7 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    // Sekarang isDisplayed sudah ada di BasePage, tidak akan error lagi
     public boolean isUserLoggedIn() {
         return isDisplayed(userWelcomeMsg);
     }
@@ -33,5 +34,7 @@ public class HomePage extends BasePage {
     public void clickRegister() { click(registerMenu); }
     public void goToCart() { click(cartMenu); }
     public void selectFirstProduct() { click(firstProduct); }
+
+    // Sekarang navigateTo sudah ada di BasePage
     public void goToHomePage() { navigateTo("https://www.demoblaze.com/"); }
 }
