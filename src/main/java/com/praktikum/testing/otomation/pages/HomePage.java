@@ -15,6 +15,9 @@ public class HomePage extends BasePage {
     @FindBy(id = "cartur")
     private WebElement cartMenu;
 
+    @FindBy(id = "nameofuser")
+    private WebElement userWelcomeMsg;
+
     @FindBy(xpath = "//a[contains(text(),'Samsung galaxy s6')]")
     private WebElement firstProduct;
 
@@ -22,8 +25,13 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
+    public boolean isUserLoggedIn() {
+        return isDisplayed(userWelcomeMsg);
+    }
+
     public void clickLogin() { click(loginMenu); }
     public void clickRegister() { click(registerMenu); }
     public void goToCart() { click(cartMenu); }
     public void selectFirstProduct() { click(firstProduct); }
+    public void goToHomePage() { navigateTo("https://www.demoblaze.com/"); }
 }

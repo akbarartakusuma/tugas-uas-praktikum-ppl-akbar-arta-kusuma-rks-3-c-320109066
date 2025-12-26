@@ -1,4 +1,4 @@
-package com.praktikum.testing.otomation.pages; // Pastikan sinkron dengan struktur folder
+package com.praktikum.testing.otomation.pages;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
@@ -18,13 +18,12 @@ public class BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    // Method yang tadi hilang (Penyebab Merah)
     protected void waitForVisible(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     protected void enterText(WebElement element, String text) {
-        waitForVisible(element); // Memanggil method visibility
+        waitForVisible(element);
         element.clear();
         element.sendKeys(text);
     }
@@ -34,9 +33,22 @@ public class BasePage {
         element.click();
     }
 
+    protected boolean isDisplayed(WebElement element) {
+        try {
+            waitForVisible(element);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void acceptAlert() {
         wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
         alert.accept();
+    }
+
+    protected void navigateTo(String url) {
+        driver.get(url);
     }
 }
