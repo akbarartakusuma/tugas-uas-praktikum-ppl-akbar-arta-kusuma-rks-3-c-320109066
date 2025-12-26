@@ -1,4 +1,4 @@
-package com.praktikum.testing.otomation.pages;
+package com.praktikum.testing.otomation.pages; // Package harus pages
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +14,6 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        // Gunakan Explicit Wait yang lebih lama (30 detik) untuk mengatasi lag internet
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver, this);
     }
@@ -34,7 +33,6 @@ public class BasePage {
         element.click();
     }
 
-    // Metode yang tadi hilang (Penyebab error di HomePage)
     protected boolean isDisplayed(WebElement element) {
         try {
             waitForVisible(element);
@@ -44,7 +42,6 @@ public class BasePage {
         }
     }
 
-    // Metode navigasi yang tadi hilang
     protected void navigateTo(String url) {
         driver.get(url);
     }
