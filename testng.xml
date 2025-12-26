@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="TechMart DemoBlaze Suite">
-    <test name="UI Regression Test">
+<suite name="Comprehensive TechMart Suite">
+    <test name="UI Testing DemoBlaze">
         <classes>
-            <class name="com.praktikum.testing.otomation.test.demo.DemoBlazeFinalTest"/>
+            <class name="com.praktikum.testing.otomation.test.demo.UserRegistrationTest"/>
+            <class name="com.praktikum.testing.otomation.test.demo.UserLoginTest"/>
+            <class name="com.praktikum.testing.otomation.test.demo.ProductNavigationTest"/>
+            <class name="com.praktikum.testing.otomation.test.demo.ShoppingCartTest"/>
+            <class name="com.praktikum.testing.otomation.test.demo.CheckoutProcessTest"/>
         </classes>
     </test>
 </suite>

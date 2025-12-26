@@ -6,24 +6,23 @@ import org.testng.annotations.Test;
 
 public class ShoppingCartTest extends BaseTest {
 
-    @Test(priority = 1, description = "Tambah produk ke keranjang belanja")
-    public void testAddProductToCart() {
-        test = extent.createTest("Cart - Add Product");
+    @Test(priority = 1, description = "Positif: Tambah produk ke keranjang")
+    public void testAddToCart() {
+        test = extent.createTest("Cart - Add Item");
         HomePage home = new HomePage(driver);
-        ProductPage product = new ProductPage(driver);
+        ProductPage prod = new ProductPage(driver);
         home.selectFirstProduct();
-        product.addToCart();
-        test.pass("Produk masuk ke cart dan alert di-accept.");
+        prod.addToCart();
+        test.pass("Produk berhasil ditambahkan.");
     }
 
-    @Test(priority = 2, description = "Verifikasi jumlah item di tabel Cart")
-    public void testVerifyCartQuantity() {
-        test = extent.createTest("Cart - Verify Quantity");
+    @Test(priority = 2, description = "Positif: Verifikasi tabel keranjang tidak kosong")
+    public void testCartTableVisibility() {
+        test = extent.createTest("Cart - Verify Table");
         HomePage home = new HomePage(driver);
         CartPage cart = new CartPage(driver);
         home.goToCart();
         Assert.assertTrue(cart.getCartItemCount() >= 0);
-        test.info("Jumlah item ditemukan: " + cart.getCartItemCount());
-        test.pass("Tabel cart terbaca dengan benar.");
+        test.pass("Tabel keranjang tampil dengan benar.");
     }
 }

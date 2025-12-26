@@ -6,32 +6,27 @@ import org.testng.annotations.Test;
 
 public class UserLoginTest extends BaseTest {
 
-    @Test(priority = 1, description = "Login dengan kredensial valid")
+    @Test(priority = 1, description = "Positif: Login dengan kredensial yang benar")
     public void testValidLogin() {
-        test = extent.createTest("Login - Valid Credentials");
+        test = extent.createTest("Login - Positive Test");
         HomePage home = new HomePage(driver);
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        test.info("Melakukan login dengan user admin_techmart");
         login.performLogin("admin_techmart", "admin123");
-
-        Assert.assertTrue(home.isUserLoggedIn(), "User gagal login!");
-        test.pass("Login berhasil, username muncul di navbar.");
+        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal!");
+        test.pass("Login berhasil, nama user muncul di navbar.");
     }
 
-    @Test(priority = 2, description = "Login dengan password salah")
+    @Test(priority = 2, description = "Negatif: Login dengan password salah")
     public void testInvalidPassword() {
-        test = extent.createTest("Login - Wrong Password");
+        test = extent.createTest("Login - Negative Test (Wrong Pass)");
         HomePage home = new HomePage(driver);
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        test.info("Mencoba login dengan password yang salah");
-        login.performLogin("admin_techmart", "salah_password");
-
-        test.info("Menangani alert error dari browser");
+        login.performLogin("admin_techmart", "wrong_pass");
         login.acceptAlert();
-        test.pass("Sistem berhasil menolak akses dengan password salah.");
+        test.pass("Sistem menolak akses dan menampilkan alert error.");
     }
 }
