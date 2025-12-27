@@ -12,9 +12,11 @@ public class ProductNavigationTest extends BaseTest {
         HomePage home = new HomePage(driver);
 
         home.selectFirstProduct();
+
+        // Memberi waktu transisi halaman
         try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("prod.html"), "Gagal masuk ke halaman produk.");
+        Assert.assertTrue(driver.getCurrentUrl().contains("prod.html"), "Gagal masuk ke detail produk.");
         test.pass("Halaman detail produk terbuka.");
     }
 
@@ -24,9 +26,10 @@ public class ProductNavigationTest extends BaseTest {
         HomePage home = new HomePage(driver);
 
         home.selectFirstProduct();
-        home.goToHomePage(); // Memanggil navigateTo dari BasePage
+        test.info("Klik navigasi kembali ke Home...");
+        home.goToHomePage();
 
-        // Menunggu halaman index.html termuat sempurna
+        // Menunggu URL berubah kembali ke index
         try { Thread.sleep(3000); } catch (InterruptedException e) { e.printStackTrace(); }
 
         Assert.assertTrue(driver.getCurrentUrl().contains("index.html"), "Gagal kembali ke Home.");
