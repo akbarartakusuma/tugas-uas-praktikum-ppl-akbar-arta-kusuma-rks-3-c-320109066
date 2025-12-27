@@ -1,4 +1,4 @@
-package com.praktikum.testing.otomation.test.demo; // Package harus test.demo
+package com.praktikum.testing.otomation.test.demo;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -27,16 +27,22 @@ public class BaseTest {
     @AfterMethod
     public void tearDown(ITestResult result) {
         if (test != null) {
+            // REVISI: Selalu ambil screenshot untuk setiap test yang selesai
+            String screenshotPath = ScreenshotUtil.takeScreenshot(driver, result.getName());
+
             if (result.getStatus() == ITestResult.FAILURE) {
-                // Mengambil screenshot jika test Gagal
-                String screenshotPath = ScreenshotUtil.takeScreenshot(driver, result.getName());
+                // Lampiran screenshot untuk status FAIL
                 test.fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
                 test.fail(result.getThrowable());
             } else if (result.getStatus() == ITestResult.SUCCESS) {
-                test.pass("Test Passed");
+                // REVISI: Tambahkan lampiran screenshot untuk status PASS
+                test.pass("Test Passed", MediaEntityBuilder.createScreenCaptureFromPath(screenshotPath).build());
             }
         }
-        if (driver != null) driver.quit();
+
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     @AfterSuite
