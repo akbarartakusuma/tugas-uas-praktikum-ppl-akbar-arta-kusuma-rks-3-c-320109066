@@ -13,14 +13,17 @@ public class UserLoginTest extends BaseTest {
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        // Pastikan user admin_techmart sudah terdaftar secara manual atau di test sebelumnya
+        // Pastikan akun admin_techmart sudah ada.
+        // Jika belum, gunakan akun yang Anda buat di testSuccessfulRegistration
         login.performLogin("admin_techmart", "admin123");
 
-        // Memberikan jeda waktu agar teks 'Welcome' muncul sepenuhnya di navbar
-        try { Thread.sleep(4000); } catch (InterruptedException e) { e.printStackTrace(); }
+        test.info("Menunggu sinkronisasi status login di navbar...");
+        // Tambahkan delay lebih lama karena server DemoBlaze sering lambat memuat session
+        try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak ditemukan.");
-        test.pass("Login berhasil, username terverifikasi di navbar.");
+        boolean loggedIn = home.isUserLoggedIn();
+        Assert.assertTrue(loggedIn, "Login Gagal! Teks Welcome tidak ditemukan di navbar.");
+        test.pass("Login berhasil, status user terverifikasi.");
     }
 
     @Test(priority = 2, description = "Negatif: Login dengan password salah")
@@ -30,8 +33,9 @@ public class UserLoginTest extends BaseTest {
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        login.performLogin("admin_techmart", "salah_pass123");
+        login.performLogin("admin_techmart", "salah_password_total");
 
+        test.info("Menangani alert 'Wrong password.'");
         login.acceptAlert();
         test.pass("Sistem berhasil menolak login dengan password salah.");
     }
