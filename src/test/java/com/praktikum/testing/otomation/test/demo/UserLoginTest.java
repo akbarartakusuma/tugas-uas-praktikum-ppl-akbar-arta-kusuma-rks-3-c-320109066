@@ -14,16 +14,14 @@ public class UserLoginTest extends BaseTest {
 
         home.clickLogin();
 
-        // Pastikan akun 'admin_techmart' sudah terdaftar manual di demoblaze.com
-        test.info("Input kredensial: admin_techmart");
+        // Pastikan akun admin_techmart sudah terdaftar secara manual di web
+        test.info("Input kredensial login");
         login.performLogin("admin_techmart", "admin123");
 
-        test.info("Menunggu sinkronisasi status login di navbar...");
+        test.info("Menunggu sinkronisasi login di navbar...");
 
-        // Memanggil isUserLoggedIn yang sekarang sudah memiliki fungsi wait otomatis
-        boolean loggedIn = home.isUserLoggedIn();
-
-        Assert.assertTrue(loggedIn, "Login Gagal! Teks Welcome tidak ditemukan di navbar.");
+        // Memanggil isUserLoggedIn yang sudah memiliki fungsi wait otomatis
+        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak muncul.");
         test.pass("Login berhasil, status user terverifikasi.");
     }
 
@@ -34,9 +32,8 @@ public class UserLoginTest extends BaseTest {
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        login.performLogin("admin_techmart", "salah_password_123");
+        login.performLogin("admin_techmart", "salah_total_123");
 
-        test.info("Menangani alert error browser...");
         login.acceptAlert();
         test.pass("Sistem menolak login dengan password salah.");
     }
