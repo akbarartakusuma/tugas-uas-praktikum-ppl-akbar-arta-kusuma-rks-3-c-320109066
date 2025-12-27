@@ -1,28 +1,36 @@
 package com.praktikum.testing.otomation.test.demo;
 
 import com.praktikum.testing.otomation.pages.*;
+import com.praktikum.testing.otomation.utils.TestDataGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class UserLoginTest extends BaseTest {
 
-    @Test(priority = 1, description = "Positif: Login dengan kredensial valid")
+    @Test(priority = 1, description = "Positif: Login dengan user yang baru didaftarkan")
     public void testValidLogin() {
         test = extent.createTest("Login - Positive Test");
         HomePage home = new HomePage(driver);
+        RegistrationPage reg = new RegistrationPage(driver);
         LoginPage login = new LoginPage(driver);
 
-        home.clickLogin();
+        // LANGKAH PENTING: Daftar dulu agar user PASTI ada di database
+        String user = TestDataGenerator.generateRandomUsername();
+        String pass = "Pass123!";
 
-        // Pastikan akun admin_techmart sudah terdaftar secara manual di web
-        test.info("Input kredensial login");
-        login.performLogin("admin_techmart", "admin123");
+        test.info("Mendaftarkan user baru: " + user);
+        home.clickRegister();
+        reg.registerUser(user, pass);
+
+        // Melakukan Login
+        test.info("Melakukan login dengan user baru tersebut");
+        home.clickLogin();
+        login.performLogin(user, pass);
 
         test.info("Menunggu sinkronisasi login di navbar...");
-
-        // Memanggil isUserLoggedIn yang sudah memiliki fungsi wait otomatis
-        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak muncul.");
-        test.pass("Login berhasil, status user terverifikasi.");
+        // Memanggil isUserLoggedIn yang sudah memiliki wait dinamis di HomePage
+        Assert.assertTrue(home.isUserLoggedIn(), "Login Gagal! Teks Welcome tidak muncul untuk user: " + user);
+        test.pass("Login berhasil, username '" + user + "' terverifikasi di navbar.");
     }
 
     @Test(priority = 2, description = "Negatif: Login dengan password salah")
@@ -32,9 +40,9 @@ public class UserLoginTest extends BaseTest {
         LoginPage login = new LoginPage(driver);
 
         home.clickLogin();
-        login.performLogin("admin_techmart", "salah_total_123");
+        login.performLogin("admin_techmart", "salah_password_123");
 
         login.acceptAlert();
-        test.pass("Sistem menolak login dengan password salah.");
+        test.pass("Sistem berhasil menolak login dengan password salah.");
     }
 }

@@ -11,10 +11,7 @@ public class HomePage extends BasePage {
     private WebElement loginMenu;
 
     @FindBy(id = "signin2")
-    private WebElement registerMenu; // Elemen untuk Sign Up
-
-    @FindBy(id = "cartur")
-    private WebElement cartMenu;
+    private WebElement registerMenu;
 
     @FindBy(id = "nameofuser")
     private WebElement userWelcomeMsg;
@@ -26,24 +23,19 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    // Metode untuk mengecek login dengan Explicit Wait
     public boolean isUserLoggedIn() {
         try {
+            // Menunggu maksimal 10 detik hingga teks Welcome muncul
             wait.until(ExpectedConditions.visibilityOf(userWelcomeMsg));
-            return userWelcomeMsg.isDisplayed() && userWelcomeMsg.getText().contains("Welcome");
+            return userWelcomeMsg.getText().contains("Welcome");
         } catch (Exception e) {
             return false;
         }
     }
 
-    // Metode navigasi yang dibutuhkan
     public void clickLogin() { click(loginMenu); }
-
-    public void clickRegister() { click(registerMenu); } // Memperbaiki error 'cannot find symbol'
-
-    public void goToCart() { click(cartMenu); }
-
+    public void clickRegister() { click(registerMenu); }
     public void selectFirstProduct() { click(firstProduct); }
-
     public void goToHomePage() { navigateTo("https://www.demoblaze.com/index.html"); }
+    public void goToCart() { click(driver.findElement(org.openqa.selenium.By.id("cartur"))); }
 }
